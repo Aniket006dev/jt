@@ -1,143 +1,112 @@
-# 🎤 Audio Dataset Processing & Search System
-live : https://jt-2.onrender.com/
+🎤 Hindi ASR Processing & Analysis System
 
-## 📌 Overview
+🔗 Live Demo: https://jt-1.onrender.com/
 
-This project focuses on building a complete pipeline for processing an audio dataset — starting from raw metadata to a usable dataset and an interactive search interface.
+🔗 GitHub: https://github.com/Aniket006dev/jt
 
-The goal was not just to clean and organize the data, but also to handle real-world issues like broken links, inconsistent formats, and missing information, and then make the data easily searchable through a simple UI.
+📌 Overview
 
----
+This project focuses on building a robust pipeline for Hindi ASR data processing, analysis, and improvement.
 
-## ⚙️ What I Built
+It includes:
 
-The project is divided into three main parts:
+Data preprocessing from raw audio + metadata
+Transcript cleaning & normalization
+Error analysis of ASR outputs
+Web-based interface for search & exploration
+🔹 Question 1: ASR Model Analysis
+a) Data Preprocessing
+Fixed broken dataset URLs by reconstructing valid GCP links
+Downloaded audio and transcription JSON files
+Parsed transcription (list → merged text)
+Created structured dataset (final_dataset.csv)
+b) Model Usage
+Used Whisper (baseline) for transcription fallback
+(If not fine-tuned — be honest)
+c) Evaluation (WER)
+| Model              | WER |
+|-------------------|-----|
+| Whisper-small     | TBD |
+| Fine-tuned model  | TBD |
 
-### 1. Data Extraction & Fixing
+⚠️ (Note: Full fine-tuning not completed due to time constraints)
 
-* Loaded the provided dataset (CSV)
-* Identified that the given URLs were not working as expected
-* Correctly reconstructed the working URLs by extracting relevant parts from the original links
+d) Error Sampling Strategy
+Selected every Nth incorrect prediction
+Ensured diverse error coverage
+Avoided cherry-picking
+e) Error Taxonomy
+1. Number Errors
+Example: "पच्चीस" → "25"
+2. English Word Misinterpretation
+Example: "इंटरव्यू" misrecognized
+3. Phonetic Errors
+Accent / pronunciation mismatch
+f) Proposed Fixes
+Number normalization
+English word tagging
+Better preprocessing pipeline
+g) Fix Implementation
 
----
+✔ Implemented:
 
-### 2. Data Preprocessing
+Number normalization
+Language tagging
+🔹 Question 2: Cleanup Pipeline
+a) Number Normalization
+Examples:
+दो सौ पचास → 250 ✅
+पच्चीस → 25 ✅
+दो-चार बातें → unchanged ❗
+Edge Cases:
+Idioms not converted to digits
+b) English Word Detection
+Input: मेरा इंटरव्यू अच्छा गया  
+Output: मेरा [EN]इंटरव्यू[/EN] अच्छा गया
+🔹 Question 3: Spelling Analysis
+Approach:
+Frequency-based filtering
+Heuristic validation
+Output:
 
-* Downloaded audio files from the dataset
-* Parsed transcription JSON files (handled list-based structure properly)
-* Combined everything into a structured dataset (`final_dataset.csv`)
-* Added fallback using Whisper for cases where transcription was missing
-* Applied basic NLP preprocessing:
+📊 Google Sheet: (ADD LINK HERE)
 
-  * Language tagging (`word\hi\`, `word\en\`)
-  * Number normalization
-
----
-
-### 3. Data Analysis
-
-* Calculated:
-
-  * Total number of samples
-  * Average words per transcript
-  * Total and average audio duration
-
----
-
-### 4. Search Interface (UI)
-
-* Built a Flask-based web app
-* Features:
-
-  * Search using words or full sentences
-  * Displays matching transcripts
-  * Audio playback support
-  * Pagination for results
-
----
-
-## 🧠 Challenges Faced
-
-Some real-world issues made this task interesting:
-
-* **Broken URLs**
-  The provided links didn’t work directly. I had to analyze and reconstruct them using patterns from the dataset.
-
-* **Transcription format issue**
-  The JSON files were lists of segments, not a single text field. This required proper parsing and merging.
-
-* **Audio handling in UI**
-  Initially, audio files were not playing due to incorrect paths and routing issues.
-
-* **Multiple audio playback issue**
-  Fixed by controlling playback so only one audio plays at a time.
-
----
-
-## 🚀 Tech Stack
-
-* Python
-* Pandas
-* Flask
-* Requests
-* Whisper (for speech-to-text fallback)
-
----
-
-## ▶️ How to Run
-
-1. Install dependencies:
-
-```bash
+Observations:
+High-confidence words → correct
+Low-confidence → ambiguous / mixed language
+🔹 Question 4: Lattice-Based Evaluation
+Approach:
+Combine outputs from multiple models
+Group alternatives into bins
+Example:
+["चौदह", "14"]
+["किताबें", "पुस्तकें"]
+Benefit:
+Reduces unfair WER penalties
+Captures valid variations
+🔹 Web Application
+Features:
+Search transcripts
+Audio playback
+Pagination
+🧠 Challenges
+Broken dataset URLs
+JSON parsing complexity
+Audio handling in UI
+🚀 Tech Stack
+Python
+Flask
+Pandas
+Whisper
+▶️ How to Run
 pip install -r requirements.txt
-```
-
-2. Run preprocessing:
-
-```bash
 python src/preprocessing.py
-```
-
-3. Start the web app:
-
-```bash
 python app/app.py
-```
-
-4. Open in browser:
-
-```
-http://127.0.0.1:5000/
-```
-
----
-
-## 📊 Output
-
-* Final dataset with:
-
-  * Audio paths
-  * Cleaned & processed transcripts
-  * Metadata (duration, language)
-
-* Interactive UI for searching and playing audio
-
----
-
-## 🎯 Final Thoughts
-
-This task helped me understand how messy real-world data can be and how important it is to build systems that can handle inconsistencies.
-
-I tried to go beyond basic requirements by:
-
-* Handling edge cases
-* Adding fallback mechanisms
-* Building a usable interface instead of just scripts
-
----
-
-## 🔮 Future Improvements
-
-* Better search (semantic / embeddings)
-* Improved UI/UX
-* Faster transcription pipeline
+🎯 Key Highlights
+Real-world data handling
+End-to-end pipeline
+Deployment + UI
+🔮 Future Work
+Whisper fine-tuning
+Better WER evaluation
+Semantic search

@@ -1,4 +1,5 @@
 # 🎤 Audio Dataset Processing & Search System
+live : https://jt-1.onrender.com
 
 ## 📌 Overview
 
@@ -37,9 +38,9 @@ The project is divided into three main parts:
 
 * Calculated:
 
-  * Total number of samples
-  * Average words per transcript
-  * Total and average audio duration
+  * Total number of samples : 104
+  * Average words per transcript :  1034.52
+  * Total and average audio duration : 21.89
 
 ---
 

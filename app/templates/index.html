@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Search Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🎧 Audio Search Engine</h1>
+
+    <form method="POST">
+        <input type="text" name="query" placeholder="Search transcript..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <div class="results">
+            {% for item in results %}
+                <div class="card">
+                    <audio controls>
+                        <source src="{{ item.audio }}" type="audio/wav">
+                    </audio>
+
+                    <p>{{ item.text | safe }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="/?page={{ page-1 }}&query={{ query }}">⬅ Prev</a>
+            {% endif %}
+
+            <span>Page {{ page }} / {{ total_pages }}</span>
+
+            {% if page < total_pages %}
+                <a href="/?page={{ page+1 }}&query={{ query }}">Next ➡</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+<script>
+    const audios = document.querySelectorAll("audio");
+
+    audios.forEach(audio => {
+        audio.addEventListener("play", () => {
+            audios.forEach(other => {
+                if (other !== audio) {
+                    other.pause();
+                    other.currentTime = 0;
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

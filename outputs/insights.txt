@@ -1,0 +1,8 @@
+
+Total Samples: 104
+
+Average Words per Transcript: 1034.52
+
+Average Audio Duration (seconds): 757.60
+
+Total Audio Duration (hours): 21.89

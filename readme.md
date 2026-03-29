@@ -135,7 +135,7 @@ I tried to go beyond basic requirements by:
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
 * Better search (semantic / embeddings)
 * Improved UI/UX

@@ -1,7 +1,10 @@
-# 🎤 Audio Dataset Processing & Search System
-live : https://jt-1.onrender.com
+🎤 Hindi ASR Processing & Analysis System
 
-## 📌 Overview
+🔗 Live Demo: https://jt-1.onrender.com/
+
+🔗 GitHub: https://github.com/Aniket006dev/jt
+
+📌 Overview
 
 This project focuses on building a complete pipeline for processing an audio dataset — starting from raw metadata to a usable dataset and an interactive search interface.
 

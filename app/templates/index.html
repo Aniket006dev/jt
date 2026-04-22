@@ -1,61 +1,232 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Audio Search Engine</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioIntel</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="logo">AudioIntel</div>
+            <nav class="top-nav" aria-label="Primary Navigation">
+                <a href="#overview" class="active">Overview</a>
+                <a href="#services">Services</a>
+                <a href="#process">How It Works</a>
+                <a href="#workspace">Workspace</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle dark mode">
+                    <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+                </button>
+                <a href="#" class="sign-link">Sign In</a>
+                <a href="#workspace" class="cta-small">Get Started</a>
+            </div>
+        </header>
 
-<div class="container">
-
-    <h1>🎧 Audio Search Engine</h1>
-
-    <form method="POST">
-        <input type="text" name="query" placeholder="Search transcript..." value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
-
-    {% if results %}
-        <div class="results">
-            {% for item in results %}
-                <div class="card">
-                    <audio controls>
-                        <source src="{{ item.audio }}" type="audio/wav">
-                    </audio>
-
-                    <p>{{ item.text | safe }}</p>
+        <main>
+            <section class="hero" id="overview">
+                <div class="hero-content">
+                    <h1>Master Your Audio Data with Advanced Intelligence</h1>
+                    <p>
+                        Enterprise-grade transcript search and validation. Turn thousands of hours of audio recordings into
+                        searchable, actionable evidence with sub-second precision.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#workspace">Start Searching</a>
+                        <a class="btn btn-secondary" href="#services">Explore Services</a>
+                    </div>
                 </div>
-            {% endfor %}
-        </div>
 
-        <div class="pagination">
-            {% if page > 1 %}
-                <a href="/?page={{ page-1 }}&query={{ query }}">⬅ Prev</a>
-            {% endif %}
+                <div class="hero-media">
+                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80" alt="Modern conference office with audio analysis workspace">
+                </div>
+            </section>
 
-            <span>Page {{ page }} / {{ total_pages }}</span>
+            <section class="stat-grid">
+                <article><h3>99.9%</h3><p>System Uptime</p></article>
+                <article><h3>2s</h3><p>Processing Speed</p></article>
+                <article><h3>100%</h3><p>Analysis Clarity</p></article>
+            </section>
 
-            {% if page < total_pages %}
-                <a href="/?page={{ page+1 }}&query={{ query }}">Next ➡</a>
-            {% endif %}
-        </div>
-    {% endif %}
+            <section class="section section-cream" id="services">
+                <div class="section-heading center">
+                    <h2>Comprehensive Audio Intelligence</h2>
+                    <p>Solutions designed for financial compliance, legal discovery, and operational excellence.</p>
+                </div>
+                <div class="service-grid">
+                    <article class="service-card">
+                        <span class="service-icon">⌕</span>
+                        <h3>Transcript Search</h3>
+                        <p>Global semantic search across millions of hours of indexed conversation audio.</p>
+                    </article>
+                    <article class="service-card">
+                        <span class="service-icon">▶</span>
+                        <h3>Evidence Playback</h3>
+                        <p>High-fidelity synchronized playback with multi-channel isolation for clear validation.</p>
+                    </article>
+                    <article class="service-card">
+                        <span class="service-icon">☑</span>
+                        <h3>Operational Review</h3>
+                        <p>Automated quality assurance and compliance reporting for large scale audio datasets.</p>
+                    </article>
+                </div>
+            </section>
 
-</div>
-<script>
-    const audios = document.querySelectorAll("audio");
+            <section class="section" id="process">
+                <div class="section-heading center">
+                    <h2>Streamlined Analysis Workflow</h2>
+                </div>
+                <div class="flow-grid">
+                    <article>
+                        <span class="step-badge">1</span>
+                        <h3>Enter Criteria</h3>
+                        <p>Define keywords, sentiment, or specific metadata for your search query.</p>
+                    </article>
+                    <div class="flow-arrow">→</div>
+                    <article>
+                        <span class="step-badge">2</span>
+                        <h3>Review Matches</h3>
+                        <p>Scan through AI-indexed results with high-accuracy transcript confidence scores.</p>
+                    </article>
+                    <div class="flow-arrow">→</div>
+                    <article>
+                        <span class="step-badge">3</span>
+                        <h3>Validate Playback</h3>
+                        <p>Instantly jump to audio segments to verify findings and export evidence.</p>
+                    </article>
+                </div>
+            </section>
 
-    audios.forEach(audio => {
-        audio.addEventListener("play", () => {
-            audios.forEach(other => {
-                if (other !== audio) {
-                    other.pause();
-                    other.currentTime = 0;
-                }
+            <section class="section workspace" id="workspace">
+                <div class="workspace-panel">
+                    <form method="POST" class="search-form" role="search" aria-label="Audio transcript search form">
+                        <input
+                            id="query"
+                            type="text"
+                            name="query"
+                            placeholder="financial audit"
+                            value="{{ query }}"
+                        >
+                        <button type="submit">Search</button>
+                    </form>
+
+                    <div class="results-meta">
+                        {% if query %}
+                            <span>Showing {{ total_results }} matches for '{{ query }}'</span>
+                        {% else %}
+                            <span>Enter your query to begin transcript search.</span>
+                        {% endif %}
+                    </div>
+
+                    {% if results %}
+                        <div class="result-list">
+                            {% for item in results %}
+                                <article class="result-row">
+                                    <div class="wave-box">
+                                        <div class="wave">
+                                            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                                        </div>
+                                        <small>Play Segment</small>
+                                    </div>
+                                    <div class="result-main">
+                                        <audio controls>
+                                            <source src="{{ item.audio }}" type="audio/wav">
+                                        </audio>
+                                        <p>{{ item.text | safe }}</p>
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+
+                        <div class="pagination" aria-label="Results pagination">
+                            {% if page > 1 %}
+                                <a href="/?page={{ page-1 }}&query={{ query }}">Previous</a>
+                            {% endif %}
+
+                            <span>{{ page }}</span>
+
+                            {% if page < total_pages %}
+                                <a href="/?page={{ page+1 }}&query={{ query }}">Next</a>
+                            {% endif %}
+                        </div>
+                    {% elif query %}
+                        <div class="empty-state">No results found. Try broader search terms.</div>
+                    {% else %}
+                        <div class="empty-state">Results will appear here after search.</div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="section contact-wrap" id="contact">
+                <div class="contact-copy">
+                    <h2>Ready to scale your audio operations?</h2>
+                    <p>
+                        Contact our enterprise solutions team for a technical deep-dive and custom pilot program tailored
+                        to your data requirements.
+                    </p>
+                    <ul>
+                        <li>solutions@audiointel.platform</li>
+                        <li>Global HQ | Palo Alto, CA</li>
+                    </ul>
+                </div>
+
+                <form class="contact-form" action="#" method="get">
+                    <label for="fullName">Full Name</label>
+                    <input id="fullName" type="text" placeholder="John Doe">
+
+                    <label for="workEmail">Work Email</label>
+                    <input id="workEmail" type="email" placeholder="john@enterprise.com">
+
+                    <label for="message">Requirement</label>
+                    <textarea id="message" rows="5" placeholder="Briefly describe your audio analysis needs..."></textarea>
+
+                    <button type="submit">Submit Inquiry</button>
+                </form>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div>
+                <strong>AudioIntel</strong>
+                <p>High-fidelity audio analysis for enterprise.</p>
+            </div>
+            <nav aria-label="Footer links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">API Documentation</a>
+                <a href="#">System Status</a>
+            </nav>
+        </footer>
+    </div>
+
+    <script>
+        const audios = document.querySelectorAll("audio");
+
+        audios.forEach(audio => {
+            audio.addEventListener("play", () => {
+                audios.forEach(other => {
+                    if (other !== audio) {
+                        other.pause();
+                        other.currentTime = 0;
+                    }
+                });
             });
         });
-    });
-</script>
 
+        const themeToggle = document.getElementById("themeToggle");
+        const savedTheme = localStorage.getItem("theme");
+
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark-theme");
+        }
+
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark-theme");
+            localStorage.setItem("theme", document.body.classList.contains("dark-theme") ? "dark" : "light");
+        });
+    </script>
 </body>
 </html>

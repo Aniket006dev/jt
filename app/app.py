@@ -21,7 +21,7 @@ RESULTS_PER_PAGE = 5
 
 def smart_search(df, query):
     words = query.lower().split()
-
+ 
     def match_score(text):
         text = str(text).lower()
         score = 0
@@ -62,12 +62,13 @@ def home():
     page = int(request.args.get("page", 1))
 
     total_pages = 0
+    total_results = 0
 
     if query:
         filtered = smart_search(df, query)
 
         total_results = len(filtered)
-        total_pages = math.ceil(total_results / RESULTS_PER_PAGE)
+        total_pages = math.ceil(total_results / RESULTS_PER_PAGE) if total_results else 0
 
         start = (page - 1) * RESULTS_PER_PAGE
         end = start + RESULTS_PER_PAGE
@@ -85,7 +86,8 @@ def home():
         results=results,
         query=query,
         page=page,
-        total_pages=total_pages
+        total_pages=total_pages,
+        total_results=total_results
     )
 
 
@@ -98,3 +100,5 @@ def serve_audio(filename):
 if __name__ == "__main__":
     port= int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+app/static/style.css
+app/static/style.css
